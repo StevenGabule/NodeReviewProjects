@@ -1,2 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 BookApi/node_modules/
+BookApiClient/.next/
+BookApiClient/node_modules/
