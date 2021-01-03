@@ -1,5 +1,6 @@
 import config from "dotenv";
 import express from 'express';
+import cors from 'cors';
 import BookRoutes from './server/routes/BookRoutes';
 
 config.config();
@@ -7,7 +8,7 @@ config.config();
 const app = express();
 
 app.use(express.json());
-
+app.use(cors())
 const port = process.env.PORT || 8000;
 
 app.use("/api/v1/books", BookRoutes);

@@ -1,17 +1,33 @@
 import React, {useEffect} from 'react';
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import Link from "next/link";
 
 function HomePage({data}) {
-
-    useEffect(() => {
-        console.log(data);
-    })
-
     return (
-        <ul>
-            {data.map((book) => (
-                <li key={book.id}>{book.title}</li>
-            ))}
-        </ul>
+        <Container>
+            <Row>
+                <Col>
+                    <div className={"d-flex justify-content-between align-items-center"}>
+                        <h1>E-Book Page</h1>
+                        <Link href="/books/create">
+                            <a>New Book</a>
+                        </Link>
+                    </div>
+                    {data.map(({id, title, description}) => (
+                        <Card key={id}>
+                            <Card.Body>
+                                <Card.Title>
+                                    <Link href={`/books?_id=${id}`}><a>{title}</a></Link>
+                                </Card.Title>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Col>
+            </Row>
+        </Container>
     )
 }
 
