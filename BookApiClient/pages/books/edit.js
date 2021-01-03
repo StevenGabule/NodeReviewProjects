@@ -9,14 +9,13 @@ import catchErrors from "../../utils/catchErrors";
 import Alert from "react-bootstrap/Alert";
 import Router from "next/router";
 
-const INITIAL_VALUE = {
-    title: "",
-    description: "",
-    price: ""
-}
-
-function Create() {
-    const [book, setBook] = useState(INITIAL_VALUE);
+function Edit({data}) {
+    const [book, setBook] = useState({
+        id: data.id,
+        title: data.title,
+        price: data.price,
+        description: data.description,
+    });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [disabled, setDisabled] = useState(false);
@@ -33,11 +32,11 @@ function Create() {
             e.preventDefault();
             setLoading(true);
             setError('');
-            const url = `${baseUrl}/api/v1/books`;
-            const {title, price, description} = book;
+            const {id, title, price, description} = book;
+            const url = `${baseUrl}/api/v1/books/${id}`;
             const payload = {title, price, description};
-            await axios.post(url, payload)
-            setBook(INITIAL_VALUE);
+            const response = await axios.put(url, payload)
+            console.log({response});
             setSuccess(true)
             await Router.push('/');
         } catch (e) {
@@ -58,7 +57,7 @@ function Create() {
                             <p>{error.message}</p>
                         </Alert>
                     )}
-                    <h4>Create a book information</h4>
+                    <h4>Edit a book information</h4>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="title" className="form-label">Title</label>
@@ -78,7 +77,7 @@ function Create() {
                                       id="InputDescription" rows="3" name={"description"}/>
                         </div>
                         <div className="mb-3">
-                            <Button variant="primary" disabled={disabled || loading} type={"submit"}>Create</Button>
+                            <Button variant="primary" disabled={disabled || loading} type={"submit"}>Edit</Button>
                         </div>
                     </form>
                 </Col>
@@ -87,4 +86,13 @@ function Create() {
     )
 }
 
-export default Create;
+Edit.getInitialProps = async ({query: { _id: id }}) => {
+    const url = `${baseUrl}/api/v1/books/${id}`
+    const payload = {params: { id }}
+    const {data} = await axios.get(url, payload);
+    return {
+        data: data.data
+    }
+}
+
+export default Edit;
