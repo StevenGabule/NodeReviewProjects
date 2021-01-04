@@ -1,0 +1,23 @@
+THINGS TO BE DONE
+- MODULE
+	-> USER
+		-> AUTHENTICATION SYSTEM
+			-> LOGIN
+			-> REGISTER
+			-> LOGOUT
+		-> PROFILE
+			-> EDIT ACCOUNT
+			-> DELETE ACCOUNT
+			
+-> TABLE
+	-> USERS
+		-> id
+		-> name
+		-> email
+		-> password
+		-> contact_number
+		-> avatar
+		-> types
+			-> customers
+			-> admin
+			-> root

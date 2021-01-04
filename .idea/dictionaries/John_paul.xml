@@ -2,6 +2,7 @@
   <dictionary name="John paul">
     <words>
       <w>axios</w>
+      <w>bcrypt</w>
       <w>sequelize</w>
     </words>
   </dictionary>
