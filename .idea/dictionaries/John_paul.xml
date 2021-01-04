@@ -3,7 +3,10 @@
     <words>
       <w>axios</w>
       <w>bcrypt</w>
+      <w>navbar</w>
+      <w>navbars</w>
       <w>sequelize</w>
+      <w>toggler</w>
     </words>
   </dictionary>
 </component>

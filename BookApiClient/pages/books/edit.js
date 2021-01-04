@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import catchErrors from "../../utils/catchErrors";
 import Alert from "react-bootstrap/Alert";
 import Router from "next/router";
+import Layout from "../../components/Layout";
 
 function Edit({data}) {
     const [book, setBook] = useState({
@@ -48,6 +49,7 @@ function Edit({data}) {
     }
 
     return (
+        <Layout>
         <Container>
             <Row>
                 <Col>
@@ -83,6 +85,7 @@ function Edit({data}) {
                 </Col>
             </Row>
         </Container>
+        </Layout>
     )
 }
 

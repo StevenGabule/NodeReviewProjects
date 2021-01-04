@@ -5,10 +5,12 @@ import Row from "react-bootstrap/Row";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import moment from "moment";
+import Layout from "../components/Layout";
 
 
 function Books({data}) {
     return (
+        <Layout>
         <Container>
             <Row>
                 <Col>
@@ -18,6 +20,7 @@ function Books({data}) {
                 </Col>
             </Row>
         </Container>
+        </Layout>
     )
 }
 
