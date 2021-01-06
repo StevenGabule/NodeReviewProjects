@@ -52,7 +52,7 @@ function Create() {
     return (
         <Layout>
             <Container>
-                <Row>
+                <Row style={{marginTop: "15%"}}>
                     <Col>
                         {error && show && (
                             <Alert variant="danger" onClose={() => setShow(false)} dismissible>

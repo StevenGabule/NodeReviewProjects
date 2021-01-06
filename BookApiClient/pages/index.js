@@ -14,7 +14,7 @@ function HomePage({data}) {
     }
 
     return (
-        <Layout>
+        <>
             <Container style={{marginTop: '4%'}}>
                 <div className={"d-flex justify-content-between align-items-center"}>
                     <h1>E-Book Page</h1>
@@ -39,7 +39,6 @@ function HomePage({data}) {
                                                 onClick={() => handleDeleteBook(id)}>
                                             Delete
                                         </Button>
-
                                     </div>
                                 </Card.Body>
                             </Card>
@@ -47,13 +46,17 @@ function HomePage({data}) {
                     ))}
                 </div>
             </Container>
-        </Layout>
+        </>
     )
 }
 
 HomePage.getInitialProps = async () => {
-    const {data} = await axios.get(`${baseUrl}/api/v1/books`);
-    return {data: data.data}
+    try {
+        const {data} = await axios.get(`${baseUrl}/api/v1/books`);
+        return {data: data.data}
+    } catch (e) {
+        throw e;
+    }
 }
 
 export default HomePage;

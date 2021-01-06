@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button} from "react-bootstrap";
+import Link from "next/link";
 
 export default function Layout({children}) {
     return (
@@ -36,11 +37,10 @@ export default function Layout({children}) {
                                 </div>
                             </li>
                         </ul>
-                        <form className="form-inline my-2 my-lg-0">
-                            <input className="form-control mr-sm-2" type="text" placeholder="Search"
-                                   aria-label="Search"/>
-                            <Button className="btn btn-primary my-2 my-sm-0" type="submit">Search</Button>
-                        </form>
+                        <div className="form-inline my-2 my-lg-0">
+                            <Link href={"/login"}><a className="btn btn-primary my-2 mr-2 my-sm-0">Login</a></Link>
+                            <Link href={"/register"}><a className="btn btn-primary my-2 my-sm-0" >Register</a></Link>
+                        </div>
                     </div>
                 </div>
             </nav>

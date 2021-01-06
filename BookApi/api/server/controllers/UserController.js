@@ -1,5 +1,6 @@
 import UserService from "../services/UserService";
 import Util from "../utils/Utils";
+import jwt from "jsonwebtoken";
 
 const util = new Util();
 
@@ -92,15 +93,17 @@ class UserController {
     }
 
     static async profile(req, res) {
-        const {id} = req.params;
-        if (!Number(id)) {
-            util.setError(400, "Please input a number value!");
+        if (!("authorization" in req.headers)) {
+            util.setError(401, "No authorization token");
             return util.send(res);
         }
+
         try {
-            const result = await UserService.profile(id);
+            const { userId } = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
+            console.log(userId)
+            const result = await UserService.profile(userId);
             if (!result) {
-                util.setError(404, `Cannot find user with the id ${id}`);
+                util.setError(404, `Account not found`);
             } else {
                 util.setSuccess(200, "Found it!", result);
             }

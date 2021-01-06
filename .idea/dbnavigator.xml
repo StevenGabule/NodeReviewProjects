@@ -25,15 +25,13 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="120eedcd-6a53-4d7c-81db-57740a70058a">
-        <schema name="information_schema" object-types="table, function, view" />
-        <schema name="pg_catalog" object-types="table, function, view" />
-        <schema name="public" object-types="constraint, table, index, column, function, sequence, dataset trigger, view" />
+        <schema name="public" object-types="table, view" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="120eedcd-6a53-4d7c-81db-57740a70058a">
-      <console name="Connection" type="STANDARD" schema="public" session="Main"><![CDATA[select * from "users";]]></console>
+      <console name="Connection" type="STANDARD" schema="public" session="Main">select * from &quot;users&quot;;</console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -124,6 +122,7 @@
           <restore-workspace value="true" />
           <restore-workspace-deep value="true" />
           <environment-type value="default" />
+          <connectivity-timeout value="5" />
           <idle-time-to-disconnect value="30" />
           <idle-time-to-disconnect-pool value="5" />
           <credential-expiry-time value="10" />

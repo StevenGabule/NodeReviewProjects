@@ -3,8 +3,8 @@ import Layout from "../components/Layout";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
-import Router from "next/router";
 import catchErrors from "../utils/catchErrors";
+import {handleLogin} from "../utils/auth";
 
 const INITIAL_VALUE = {
     email: "mike@gmail.com",
@@ -37,10 +37,11 @@ function Login() {
                 email,
                 password,
             };
-            await axios.post(url, payload)
+            const response = await axios.post(url, payload)
+            console.log(response.data);
+            handleLogin(response.data);
             setUser(INITIAL_VALUE);
-            setSuccess(true)
-            await Router.push('/');
+            // await Router.push('/');
         } catch (e) {
             catchErrors(e, setError);
             setShow(true);
@@ -48,7 +49,7 @@ function Login() {
             setLoading(false);
         }
     }
-    return <Layout>
+    return <>
         <h3>Login</h3>
         <Container>
             <Row className="justify-content-md-center">
@@ -95,7 +96,7 @@ function Login() {
                 </Col>
             </Row>
         </Container>
-    </Layout>
+    </>
 }
 
 export default Login;

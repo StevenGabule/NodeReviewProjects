@@ -10,7 +10,7 @@ import Layout from "../components/Layout";
 
 function Books({data}) {
     return (
-        <Layout>
+        <>
         <Container>
             <Row>
                 <Col>
@@ -20,7 +20,7 @@ function Books({data}) {
                 </Col>
             </Row>
         </Container>
-        </Layout>
+        </>
     )
 }
 

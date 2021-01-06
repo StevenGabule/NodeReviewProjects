@@ -63,7 +63,7 @@ function Register() {
         }
     }
 
-    return <Layout>
+    return <>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
@@ -167,7 +167,7 @@ function Register() {
                 </Col>
             </Row>
         </Container>
-    </Layout>
+    </>
 }
 
 export default Register;
