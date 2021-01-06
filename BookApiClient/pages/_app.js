@@ -5,16 +5,19 @@ import Layout from "../components/Layout";
 import {destroyCookie, parseCookies} from "nookies";
 import {redirectUser} from "../utils/auth";
 import baseUrl from "../utils/baseUrl";
+import axios from "axios";
+
 class MyApp extends App {
 
     static async getInitialProps({Component, ctx}) {
-        const {token}  = parseCookies(ctx);
+        const {token} = parseCookies(ctx);
         console.log(token)
         let pageProps = {};
 
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
+
         if (!token) {
             const isProtectedRoute = ctx.pathname === "/profile" || ctx.pathname === '/register';
             if (isProtectedRoute) {
@@ -22,9 +25,13 @@ class MyApp extends App {
             }
         } else {
             try {
-                const payload = {headers: { Authorization: token}};
-                const url = `${baseUrl}/api/`
-            }catch (e) {
+                const payload = {headers: {Authorization: token}};
+                const url = `${baseUrl}/api/v1/users/profile`;
+                const {data: user} = await axios.get(url, payload);
+                console.log(user)
+                pageProps.user = user;
+                pageProps.token = token;
+            } catch (e) {
                 console.error("Error getting current user!", e);
                 destroyCookie(ctx, 'token');
                 redirectUser(ctx, 'login');
@@ -43,8 +50,6 @@ class MyApp extends App {
             </Layout>
         )
     }
-
-
 }
 
 export default MyApp;

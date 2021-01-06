@@ -27,7 +27,9 @@ class UserService {
             const user = await db.User.findOne({
                 where: {email}
             });
+
             const pw = bcrypt.compareSync(password, user.password);
+
             if (!pw) {
                 return {
                     loggedIn: false,
@@ -35,15 +37,18 @@ class UserService {
                     message: "Invalid password",
                 };
             }
+
             const token = jwt.sign({id: user.id}, process.env.SECRET_KEY, {
                 expiresIn: 86400
-            })
+            });
+
             return {
                 loggedIn: true,
                 id: user.id,
                 email: user.email,
                 accessToken: token,
-            }
+            };
+
         } catch (e) {
             throw e;
         }
@@ -69,14 +74,22 @@ class UserService {
         }
     }
 
-    static async update(id, $request) {
+    static async update(id, {params}) {
         try {
             const result = await db.User.findOne({
                 where: {id: Number(id)}
-            })
+            });
+
             if (result) {
-                await db.User.update($request, {where: {id: Number(id)}})
-                return $request;
+                const $result = await db.User.update({
+                    firstName: params.firstName,
+                    middleName: params.middleName,
+                    lastName: params.lastName,
+                    contact_number: params.contact_number,
+                    email: params.email,
+                }, {where: {id: Number(id)}})
+                console.log("result: ", $result);
+                return $result;
             }
         } catch (e) {
             throw e;

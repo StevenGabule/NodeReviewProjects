@@ -36,6 +36,11 @@ export default function Layout({children}) {
                                     <a className="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </li>
+                            <li className="nav-item">
+                                <Link href={"/profile"}>
+                                    <a className="nav-link">Profile</a>
+                                </Link>
+                            </li>
                         </ul>
                         <div className="form-inline my-2 my-lg-0">
                             <Link href={"/login"}><a className="btn btn-primary my-2 mr-2 my-sm-0">Login</a></Link>

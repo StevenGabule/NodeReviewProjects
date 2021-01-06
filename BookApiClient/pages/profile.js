@@ -1,60 +1,60 @@
-import React, {useState} from "react";
-import Layout from "../components/Layout";
+import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
-import Router from "next/router";
 import catchErrors from "../utils/catchErrors";
 
-const INITIAL_VALUE = {
-    firstName: "mike",
-    lastName: "ross",
-    middleName: "d",
-    email: "mike@gmail.com",
-    contact_number: "0987654321",
-    password: "password",
-    password_confirmation: "password",
+const PASSWORD = {
+    current: "",
+    new: "",
+    confirm: "",
 }
 
-function Register() {
-    const [user, setUser] = useState(INITIAL_VALUE);
+function Profile({user: ProfileInfo, token: Tokens}) {
+    const [user, setUser] = useState(ProfileInfo.data);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
     const [show, setShow] = useState(true);
+    const [password, setPassword] = useState(PASSWORD);
+    const [token, setToken] = useState(Tokens);
 
     function handleChange(e) {
         const {name, value} = e.target;
         setUser(prevState => ({...prevState, [name]: value}))
     }
 
-    async function handleSubmit(e) {
+    function handleChangePassword(e) {
+        const {name, value} = e.target;
+        setPassword(prevState => ({...prevState, [name]: value}))
+    }
+
+     async function handleSubmit(e) {
         try {
             e.preventDefault();
             setLoading(true);
             setError('');
-            const user_type = 1;
-            const url = `${baseUrl}/api/v1/users/register`;
+            const url = `${baseUrl}/api/v1/users/update`;
             const {
                 firstName,
                 middleName,
                 lastName,
-                email,
                 contact_number,
-                password} = user;
-            const payload = {firstName,
-                middleName,
-                lastName,
                 email,
-                contact_number,
-                password,
-                user_type,
+            } = user;
+            const payload = {
+                params: {
+                    firstName,
+                    middleName,
+                    lastName,
+                    contact_number,
+                    email
+                }
             };
-            await axios.post(url, payload)
-            setUser(INITIAL_VALUE);
-            setSuccess(true)
-            await Router.push('/login');
+            const headers = { headers: {Authorization: token} };
+            const response = await axios.put(url, payload, headers)
+            console.log(response)
         } catch (e) {
             catchErrors(e, setError);
             setShow(true);
@@ -64,10 +64,11 @@ function Register() {
     }
 
     return <>
+        <h3>Profile Information</h3>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
-                    <h3 style={{marginTop: '10%'}}>Register</h3>
+                    <h3 style={{marginTop: '10%'}}>Personal Information</h3>
                     <form action="" onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-4 mb-3">
@@ -78,7 +79,8 @@ function Register() {
                                        placeholder=""
                                        value=""
                                        name={"firstName"}
-                                       required value={user.firstName} onChange={handleChange}/>
+                                       required value={user.firstName}
+                                       onChange={handleChange}/>
                             </div>
 
                             <div className="col-md-4 mb-3">
@@ -109,7 +111,6 @@ function Register() {
                         </div>
 
                         <div className="row">
-
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="email">Email</label>
                                 <input type="text"
@@ -135,33 +136,60 @@ function Register() {
                             </div>
 
                             <div className="col-md-12 mb-3">
-                                <label htmlFor="password">Password</label>
+                                <Button type={"submit"} name={"submit"}
+                                        className={"btn btn-primary"}>
+                                    Save changes
+                                </Button>
+                            </div>
+                        </div>
+                    </form>
+                </Col>
+
+                <Col md={8}>
+                    <h3 style={{marginTop: '10%'}}>Change Password</h3>
+                    <form action="">
+                        <div className="row">
+                            <div className="col-md-12 mb-3">
+                                <label htmlFor="password_confirmation">Current password</label>
                                 <input type="password"
                                        className="form-control"
-                                       id="password"
+                                       id="current"
+                                       name="current"
                                        placeholder=""
-                                       name={"password"}
-                                       value={user.password}
-                                       onChange={handleChange}
+                                       onChange={handleChangePassword}
+                                       value={password.current}
+                                       required/>
+                            </div>
+
+
+                            <div className="col-md-12 mb-3">
+                                <label htmlFor="password_confirmation">New Password</label>
+                                <input type="password"
+                                       className="form-control"
+                                       id="new"
+                                       name="new"
+                                       placeholder=""
+                                       onChange={handleChangePassword}
+                                       value={password.new}
                                        required/>
                             </div>
 
                             <div className="col-md-12 mb-3">
-                                <label htmlFor="password_confirmation">Password Confirm</label>
+                                <label htmlFor="password">Confirm Password</label>
                                 <input type="password"
                                        className="form-control"
-                                       id="password_confirmation"
-                                       name="password_confirmation"
+                                       id="confirm"
                                        placeholder=""
-                                       onChange={handleChange}
-                                       value={user.password_confirmation}
+                                       name={"confirm"}
+                                       value={password.confirm}
+                                       onChange={handleChangePassword}
                                        required/>
                             </div>
 
                             <div className="col-md-12 mb-3">
                                 <Button type={"submit"} name={"submit"}
-                                        className={"btn btn-block btn-primary"}>
-                                    Submit
+                                        className={"btn btn-primary"}>
+                                    Save password
                                 </Button>
                             </div>
                         </div>
@@ -172,4 +200,4 @@ function Register() {
     </>
 }
 
-export default Register;
+export default Profile;

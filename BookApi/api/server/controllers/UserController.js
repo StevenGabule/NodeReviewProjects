@@ -41,6 +41,7 @@ class UserController {
         const user = req.body;
         try {
             const result = await UserService.login(user);
+            console.log(result);
             if (result.loggedIn) {
                 util.setSuccess(200, "User loggedIn!", result);
             } else {
@@ -99,9 +100,9 @@ class UserController {
         }
 
         try {
-            const { userId } = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
-            console.log(userId)
-            const result = await UserService.profile(userId);
+            const {id} = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
+            console.log(id)
+            const result = await UserService.profile(id);
             if (!result) {
                 util.setError(404, `Account not found`);
             } else {
@@ -115,19 +116,22 @@ class UserController {
     }
 
     static async profile_update(req, res) {
-        const modify = req.body;
-        const {id} = req.params;
-        if (!Number(id)) {
-            util.setError(400, "Please input a valid number!");
+        if (!("authorization" in req.headers)) {
+            util.setError(401, "No authorization token");
             return util.send(res);
         }
-
         try {
-            const result = await UserService.update(id, modify);
+            const body = req.body;
+            const {id} = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
+            if (!Number(id)) {
+                util.setError(400, "Please input a valid number!");
+                return util.send(res);
+            }
+            const result = await UserService.update(id, body);
             if (!result) {
-                util.setError(404, `Can't find the book with the id of ${id}`);
+                util.setError(404, `Can't update the id of ${id}`);
             } else {
-                util.setSuccess(200, "Book is updated successfully!", result);
+                util.setSuccess(200, "User is updated successfully!", result);
             }
             return util.send(res);
         } catch (e) {
