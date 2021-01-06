@@ -1,7 +1,37 @@
 import BookService from "../services/BookService";
 import Util from "../utils/Utils";
+import jimp from 'jimp';
+import multer from 'multer';
 
 const util = new Util();
+const imageUploadOptions = {
+    storage: multer.memoryStorage(),
+    limits: {
+        // storing images files up to 1mb
+        fileSize: 1024 * 1024 * 1
+    },
+    fileFilter: (req, file, next) => {
+        if (file.mimetype.startsWith("image/")) {
+            next(null, true);
+        } else {
+            next(null, false);
+        }
+    }
+};
+
+exports.uploadImage = multer(imageUploadOptions).single("avatar");
+
+exports.resizeImage = async (req, res, next) => {
+    if (!req.file) {
+        return next();
+    }
+    const extension = req.file.mimetype.split("/")[1];
+    req.body.avatar = `/static/uploads/${Date.now()}.${extension}`;
+    const avatar = await jimp.read(req.file.buffer);
+    await avatar.resize(750, jimp.AUTO);
+    await avatar.write(`./${req.body.avatar}`);
+    next();
+};
 
 class BookController {
     static async index(req, res) {
@@ -10,7 +40,7 @@ class BookController {
             if (books.length > 0) {
                 util.setSuccess(200, "Book are available and hot", books);
             } else {
-                util.setSuccess(200, "No available books today.")
+                util.setSuccess(200, "No available books today.", [])
             }
             return util.send(res);
         }catch (e) {
@@ -20,6 +50,7 @@ class BookController {
     }
 
     static async store(req, res) {
+        console.log(req)
         if (!req.body.title ||!req.body.price ||!req.body.description) {
             util.setError(400, "Please provide or fill up all the details to complete your transaction.");
             return util.send(res);

@@ -10,8 +10,14 @@ class BookService {
     }
 
     static async store($request) {
+        console.log($request)
         try {
-            return await database.Book.create($request)
+            return await database.Book.create({
+                title: $request.title,
+                price: $request.price,
+                description: $request.description,
+                avatar: "http://localhost:8000" + $request.avatar,
+            })
         } catch (e) {
             throw e;
         }

@@ -1,7 +1,7 @@
 function catchErrors(error, displayError) {
     let errorMsg;
     if (error.response) {
-        // the request was made and the server responsed with a status code that
+        // the request was made and the server responded with a status code that
         // is not in the range of 2xx
         errorMsg = error.response.data;
         console.error("error response", errorMsg);

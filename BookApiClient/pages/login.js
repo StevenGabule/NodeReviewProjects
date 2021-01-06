@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/_App/Layout";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import catchErrors from "../utils/catchErrors";
 import {handleLogin} from "../utils/auth";
+import Alert from "react-bootstrap/Alert";
 
 const INITIAL_VALUE = {
     email: "mike@gmail.com",
@@ -16,7 +17,7 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [disabled, setDisabled] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState({});
     const [show, setShow] = useState(true);
 
     function handleChange(e) {
@@ -28,7 +29,7 @@ function Login() {
         try {
             e.preventDefault();
             setLoading(true);
-            setError('');
+            setError({});
             const url = `${baseUrl}/api/v1/users/login`;
             const {
                 email,
@@ -40,8 +41,6 @@ function Login() {
             const response = await axios.post(url, payload)
             console.log(response.data);
             handleLogin(response.data);
-            setUser(INITIAL_VALUE);
-            // await Router.push('/');
         } catch (e) {
             catchErrors(e, setError);
             setShow(true);
@@ -50,15 +49,21 @@ function Login() {
         }
     }
     return <>
-        <h3>Login</h3>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
-                    <h3 style={{marginTop: '10%'}}>Login</h3>
+                    <h3>Login</h3>
                     <form action="" onSubmit={handleSubmit}>
 
-
                         <div className="row">
+
+                            {Object.keys(error).length > 0 && (
+                                <div className="col-md-12">
+                                    <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                                        <p className={"mb-0"}>{error.message}</p>
+                                    </Alert>
+                                </div>
+                            )}
 
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="email">Email</label>

@@ -25,13 +25,14 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="120eedcd-6a53-4d7c-81db-57740a70058a">
-        <schema name="public" object-types="view, table" />
+        <schema name="pg_catalog" object-types="function" />
+        <schema name="public" object-types="index, function, constraint, sequence, view, dataset trigger, table, column" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="120eedcd-6a53-4d7c-81db-57740a70058a">
-      <console name="Connection" type="STANDARD" schema="public" session="Main">select * from &quot;users&quot;;</console>
+      <console name="Connection" type="STANDARD" schema="public" session="Main"><![CDATA[select * from "users";]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -41,8 +42,13 @@
     <connection id="120eedcd-6a53-4d7c-81db-57740a70058a" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="120eedcd-6a53-4d7c-81db-57740a70058a" dataset="public.Users" active-filter-id="bbcd6811-bf06-4609-96b8-acbc66db0580">
+    <filter-actions connection-id="120eedcd-6a53-4d7c-81db-57740a70058a" dataset="public.Users" active-filter-id="">
       <filter id="bbcd6811-bf06-4609-96b8-acbc66db0580" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
+    <filter-actions connection-id="120eedcd-6a53-4d7c-81db-57740a70058a" dataset="public.Books" active-filter-id="efc44a0a-8e74-4a98-b655-963fe9730b2c">
+      <filter id="efc44a0a-8e74-4a98-b655-963fe9730b2c" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="id" operator="=" value="" active="true" />
       </filter>
     </filter-actions>

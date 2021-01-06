@@ -45,7 +45,7 @@ class UserController {
             if (result.loggedIn) {
                 util.setSuccess(200, "User loggedIn!", result);
             } else {
-                util.setError(404, `User not found`);
+                util.setError(404, `Email or password are not found.`);
             }
             return util.send(res);
         } catch (e) {
@@ -132,6 +132,32 @@ class UserController {
                 util.setError(404, `Can't update the id of ${id}`);
             } else {
                 util.setSuccess(200, "User is updated successfully!", result);
+            }
+            return util.send(res);
+        } catch (e) {
+            util.setError(404, e)
+            return util.send(res)
+        }
+    }
+
+    static async change_password(req, res) {
+        if (!("authorization" in req.headers)) {
+            util.setError(401, "No authorization token");
+            return util.send(res);
+        }
+
+        try {
+            const body = req.body;
+            const {id} = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
+            if (!Number(id)) {
+                util.setError(400, "Please input a valid number!");
+                return util.send(res);
+            }
+            const result = await UserService.change_password(id, body);
+            if (!result.transaction) {
+                util.setError(404, `The current password is incorrect.`);
+            } else {
+                util.setSuccess(200, "The password is updated!", result);
             }
             return util.send(res);
         } catch (e) {

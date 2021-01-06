@@ -15,6 +15,7 @@ router.post("/login", UserController.login);
 router.post("/logout", UserController.logout);
 router.get("/profile", UserController.profile);
 router.put("/update", UserController.profile_update);
+router.put("/update/password", UserController.change_password);
 router.delete("/:id", UserController.destroy);
 
 export default router;

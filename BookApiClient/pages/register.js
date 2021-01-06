@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/_App/Layout";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
@@ -67,7 +67,7 @@ function Register() {
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
-                    <h3 style={{marginTop: '10%'}}>Register</h3>
+                    <h3>Register</h3>
                     <form action="" onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-4 mb-3">

@@ -3,8 +3,11 @@
     <words>
       <w>axios</w>
       <w>bcrypt</w>
+      <w>jimp</w>
+      <w>multer</w>
       <w>navbar</w>
       <w>navbars</w>
+      <w>nprogress</w>
       <w>sequelize</w>
       <w>toggler</w>
     </words>

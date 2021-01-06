@@ -3,11 +3,12 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import catchErrors from "../utils/catchErrors";
+import Alert from "react-bootstrap/Alert";
 
 const PASSWORD = {
-    current: "",
-    new: "",
-    confirm: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
 }
 
 function Profile({user: ProfileInfo, token: Tokens}) {
@@ -15,8 +16,8 @@ function Profile({user: ProfileInfo, token: Tokens}) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [disabled, setDisabled] = useState(false);
-    const [error, setError] = useState('');
-    const [show, setShow] = useState(true);
+    const [error, setError] = useState({});
+    const [show, setShow] = useState(false);
     const [password, setPassword] = useState(PASSWORD);
     const [token, setToken] = useState(Tokens);
 
@@ -30,7 +31,7 @@ function Profile({user: ProfileInfo, token: Tokens}) {
         setPassword(prevState => ({...prevState, [name]: value}))
     }
 
-     async function handleSubmit(e) {
+    async function handleSubmit(e) {
         try {
             e.preventDefault();
             setLoading(true);
@@ -52,7 +53,7 @@ function Profile({user: ProfileInfo, token: Tokens}) {
                     email
                 }
             };
-            const headers = { headers: {Authorization: token} };
+            const headers = {headers: {Authorization: token}};
             const response = await axios.put(url, payload, headers)
             console.log(response)
         } catch (e) {
@@ -63,13 +64,47 @@ function Profile({user: ProfileInfo, token: Tokens}) {
         }
     }
 
+    async function handleSubmitPassword(e) {
+        e.preventDefault();
+
+        setLoading(true);
+        setError({});
+        const url = `${baseUrl}/api/v1/users/update/password`;
+
+        const {
+            currentPassword,
+            newPassword,
+            confirmPassword,
+        } = password;
+
+        if (newPassword !== confirmPassword) {
+            // setError("");
+            setShow(true);
+        } else {
+            try {
+                const payload = {
+                    params: {
+                        currentPassword,
+                        newPassword,
+                    }
+                };
+                const headers = {headers: {Authorization: token}};
+                const response = await axios.put(url, payload, headers)
+                console.log(response)
+            } catch (e) {
+                catchErrors(e, setError);
+            } finally {
+                setLoading(false);
+            }
+        }
+    }
+
     return <>
-        <h3>Profile Information</h3>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
-                    <h3 style={{marginTop: '10%'}}>Personal Information</h3>
-                    <form action="" onSubmit={handleSubmit}>
+                    <h3>Personal Information</h3>
+                    <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-4 mb-3">
                                 <label htmlFor="firstName">First name</label>
@@ -147,17 +182,24 @@ function Profile({user: ProfileInfo, token: Tokens}) {
 
                 <Col md={8}>
                     <h3 style={{marginTop: '10%'}}>Change Password</h3>
-                    <form action="">
+                    <form onSubmit={handleSubmitPassword}>
                         <div className="row">
+                            {Object.keys(error).length > 0 && (
+                                <div className="col-md-12 mb-3">
+                                    <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                                        <p>{error.message}</p>
+                                    </Alert>
+                                </div>
+                            )}
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="password_confirmation">Current password</label>
                                 <input type="password"
                                        className="form-control"
-                                       id="current"
-                                       name="current"
+                                       id="currentPassword"
+                                       name="currentPassword"
                                        placeholder=""
                                        onChange={handleChangePassword}
-                                       value={password.current}
+                                       value={password.currentPassword}
                                        required/>
                             </div>
 
@@ -166,11 +208,11 @@ function Profile({user: ProfileInfo, token: Tokens}) {
                                 <label htmlFor="password_confirmation">New Password</label>
                                 <input type="password"
                                        className="form-control"
-                                       id="new"
-                                       name="new"
+                                       id="newPassword"
+                                       name="newPassword"
                                        placeholder=""
                                        onChange={handleChangePassword}
-                                       value={password.new}
+                                       value={password.newPassword}
                                        required/>
                             </div>
 
@@ -178,10 +220,10 @@ function Profile({user: ProfileInfo, token: Tokens}) {
                                 <label htmlFor="password">Confirm Password</label>
                                 <input type="password"
                                        className="form-control"
-                                       id="confirm"
+                                       id="confirmPassword"
                                        placeholder=""
-                                       name={"confirm"}
-                                       value={password.confirm}
+                                       name={"confirmPassword"}
+                                       value={password.confirmPassword}
                                        onChange={handleChangePassword}
                                        required/>
                             </div>
