@@ -8,6 +8,11 @@ import Col from "react-bootstrap/Col";
 import catchErrors from "../../utils/catchErrors";
 import Alert from "react-bootstrap/Alert";
 import Router from "next/router";
+import dynamic from "next/dynamic";
+
+
+const ReactQuill = dynamic(() => import('react-quill'), {ssr: false})
+
 
 const INITIAL_VALUE = {
     title: "",
@@ -24,6 +29,24 @@ function Create() {
     const [error, setError] = useState('');
     const [show, setShow] = useState(true);
 
+    const modules = {
+        toolbar: [
+            [{'header': [1, 2, false]}],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+            ['link', 'image'],
+            ['clean']
+        ],
+    };
+
+    const formats = [
+        'header',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image'
+    ];
+
+
     function handleChange(e) {
         let inputValue = "";
         const {name, value, files} = e.target;
@@ -37,6 +60,11 @@ function Create() {
         }
     }
 
+    function handleInputChange(e) {
+        setBook(prevState => ({...prevState, description: e}))
+        console.log(e)
+    }
+
     async function handleSubmit(e) {
         try {
             e.preventDefault();
@@ -46,7 +74,7 @@ function Create() {
 
             const url = `${baseUrl}/api/v1/books`;
             const config = {
-                headers: { 'content-type': 'multipart/form-data' }
+                headers: {'content-type': 'multipart/form-data'}
             }
 
             const {title, price, description, avatar} = book;
@@ -91,11 +119,19 @@ function Create() {
                                    onChange={handleChange}
                                    placeholder=""/>
                         </div>
+
                         <div className="mb-3">
                             <label htmlFor="InputDescription" className="form-label">Description</label>
-                            <textarea className="form-control" onChange={handleChange} value={book.description}
-                                      id="InputDescription" rows="3" name={"description"}/>
+                            <ReactQuill theme="snow" style={{ height: 250}}
+                                        modules={modules}
+                                        formats={formats}
+                                        value={book.description}
+                                        onChange={handleInputChange}
+                                        id="InputDescription"
+                                        rows="3"/>
                         </div>
+                        <br/>
+                        <br/>
                         <div className="form-group">
                             <input type="file" name="avatar" accept="image/*" onChange={handleChange}/>
                         </div>
@@ -108,5 +144,27 @@ function Create() {
         </Container>
     )
 }
+
+Create.modules = {
+    toolbar: [
+        [
+            {header: '1'},
+            {header: '2'},
+            {font: []}],
+        [{size: []}],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        ['link', 'image', 'video',]
+            ['clean'],
+        ['code-block']
+    ]
+}
+
+Create.formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet',
+    'link', 'image', 'video', 'code-block'
+]
 
 export default Create;

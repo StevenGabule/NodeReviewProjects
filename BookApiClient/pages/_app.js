@@ -7,6 +7,8 @@ import {redirectUser} from "../utils/auth";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import '../styles/nprogress.css';
+import "react-quill/dist/quill.snow.css";
+
 
 class MyApp extends App {
 

@@ -6,8 +6,10 @@ import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import moment from "moment";
 import Head from "next/head";
+import renderHTML from 'react-render-html';
 
 function Books({data}) {
+
     return (
         <>
             <Head>
@@ -18,7 +20,9 @@ function Books({data}) {
                     <Col>
                         <h1>{data.title}</h1>
                         <small>{moment(data.createdAt).fromNow()}</small>
-                        <p>{data.description}</p>
+                        <div>
+                            {renderHTML(data.description)}
+                        </div>
                     </Col>
                 </Row>
             </Container>
