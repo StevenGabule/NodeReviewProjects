@@ -2,14 +2,38 @@
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
         "User", {
-            firstName: DataTypes.STRING,
-            middleName: DataTypes.STRING,
-            lastName: DataTypes.STRING,
+            name: DataTypes.STRING,
             email: DataTypes.STRING,
             password: DataTypes.STRING,
             contact_number: DataTypes.STRING,
-            avatar: DataTypes.STRING,
-            user_type: DataTypes.INTEGER
+            avatar: {
+                type: DataTypes.STRING,
+                defaultValue: null
+            },
+            user_type: {
+                type: DataTypes.INTEGER,
+                defaultValue: 1
+            },
+            street_id: {
+                type: DataTypes.INTEGER,
+                defaultValue: null
+            },
+            barangay_id: {
+                type: DataTypes.INTEGER,
+                defaultValue: null
+            },
+            municipality_id: {
+                type: DataTypes.INTEGER,
+                defaultValue: null
+            },
+            gender: {
+                type: DataTypes.INTEGER,
+                defaultValue: 1
+            },
+            birthday: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
         },
         {}
     );

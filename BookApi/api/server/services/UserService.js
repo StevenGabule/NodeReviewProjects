@@ -4,17 +4,13 @@ import jwt from "jsonwebtoken";
 
 class UserService {
 
-    static async register(user) {
+    static async register({name, email, contact_number, password}) {
         try {
             return await db.User.create({
-                firstName: user.firstName,
-                middleName: user.middleName,
-                lastName: user.lastName,
-                email: user.email,
-                avatar: "no-user.jpg",
-                user_type: user.user_type,
-                contact_number: user.contact_number,
-                password: bcrypt.hashSync(user.password, 8),
+                name,
+                email,
+                contact_number,
+                password: bcrypt.hashSync(password, 8),
             });
         } catch (e) {
             throw e;

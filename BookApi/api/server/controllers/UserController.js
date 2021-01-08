@@ -8,11 +8,8 @@ class UserController {
 
     static async register(req, res) {
         console.log(req.body)
-        if (!req.body.firstName ||
-            !req.body.middleName ||
-            !req.body.lastName ||
+        if (!req.body.name ||
             !req.body.email ||
-            !req.body.user_type ||
             !req.body.contact_number ||
             !req.body.password) {
             util.setError(400, "Please provide or fill up all the details.");

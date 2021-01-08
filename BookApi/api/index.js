@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import BookRoutes from './server/routes/BookRoutes';
 import UserRoutes from "./server/routes/UserRoutes";
+import CartRoutes from "./server/routes/CartRoutes";
 
 config.config();
 
@@ -11,9 +12,9 @@ const app = express();
 app.use('/static/uploads', express.static('static/uploads'));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({extended: false}));
 
-app.use((req, res,next) => {
+app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
@@ -32,6 +33,7 @@ const port = process.env.PORT || 8000;
 
 app.use("/api/v1/books", BookRoutes);
 app.use("/api/v1/users", UserRoutes);
+app.use("/api/v1/carts", CartRoutes);
 
 app.get("*", (req, res) => {
     res.status(200).send({

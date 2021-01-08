@@ -2,6 +2,7 @@ import BookService from "../services/BookService";
 import Util from "../utils/Utils";
 import jimp from 'jimp';
 import multer from 'multer';
+import jwt from "jsonwebtoken";
 
 const util = new Util();
 const imageUploadOptions = {
@@ -50,14 +51,15 @@ class BookController {
     }
 
     static async store(req, res) {
-        console.log(req)
-        if (!req.body.title ||!req.body.price ||!req.body.description) {
+        console.log("body: ", req.body)
+        if (!req.body.title ||!req.body.price ||!req.body.description ||!req.body.supplier_price) {
             util.setError(400, "Please provide or fill up all the details to complete your transaction.");
             return util.send(res);
         }
         const book = req.body;
         try {
-            const createBook = await BookService.store(book);
+            const {id} = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
+            const createBook = await BookService.store(book, id);
             util.setSuccess(201, "New book information added successfully!", createBook);
             return util.send(res);
         } catch (e) {
@@ -109,14 +111,20 @@ class BookController {
     }
 
     static async destroy(req, res) {
+
+        if (!("authorization" in req.headers)) {
+            util.setError(401, "No authorization token");
+            return util.send(res);
+        }
+        const {id: userId} = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
         const {id} = req.params;
+
         if (!Number(id)) {
             util.setError(400, "Please input a number value!");
             return util.send(res);
         }
-
         try {
-            const result = await BookService.destroy(id);
+            const result = await BookService.destroy(id,userId);
             if (result) {
                 util.setSuccess(200, "Book has been deleted!");
             } else {

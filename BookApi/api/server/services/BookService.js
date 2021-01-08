@@ -1,4 +1,5 @@
 import database from '../src/models';
+import jwt from "jsonwebtoken";
 
 class BookService {
     static async index() {
@@ -9,28 +10,38 @@ class BookService {
         }
     }
 
-    static async store($request) {
-        console.log($request)
+    static async store({title, price, supplier_price, description, avatar, status}, userId) {
         try {
             return await database.Book.create({
-                title: $request.title,
-                price: $request.price,
-                description: $request.description,
-                avatar: "http://localhost:8000" + $request.avatar,
+                userId,
+                title,
+                price,
+                supplierPrice: supplier_price,
+                description,
+                avatar: "http://localhost:8000" + avatar,
+                status,
             })
         } catch (e) {
             throw e;
         }
     }
 
-    static async update(id, $request) {
+    static async update(id, {title, price, supplier_price, description, avatar, status}) {
         try {
             const result = await database.Book.findOne({
-                where: {id: Number(id)}
+                where: {
+                    id: Number(id)
+                }
             })
             if (result) {
-                 await database.Book.update($request, {where: {id: Number(id)}})
-                return $request;
+                return await result.update({
+                    title,
+                    price,
+                    supplierPrice: supplier_price,
+                    description,
+                    avatar: "http://localhost:8000" + avatar,
+                    status,
+                })
             }
         } catch (e) {
             throw e;
@@ -47,15 +58,16 @@ class BookService {
         }
     }
 
-    static async destroy(id) {
+    static async destroy(id,userId) {
         try {
             const result = await database.Book.findOne({
-                where: { id: Number(id)}
+                where: {
+                    id: Number(id),
+                    userId
+                }
             });
             if (result) {
-                return await database.Book.destroy({
-                    where: { id: Number(id)}
-                });
+                return await result.destroy();
             }
             return null;
         } catch (e) {
