@@ -48,46 +48,6 @@ class CartService {
         }
     }
 
-    static async change_password(id, {params}) {
-        try {
-            const user = await db.Cart.findOne({
-                where: {id: Number(id)}
-            });
-            console.log(params)
-            const checkCurrentPassword = bcrypt.compareSync(params.currentPassword, user.password);
-            if (!checkCurrentPassword) {
-                return {
-                    transaction: false,
-                    message: "The current password is incorrect.",
-                };
-            }
-
-            const $result = await db.Cart.update({
-                password: bcrypt.hashSync(params.newPassword, 8)
-            }, {
-                where: {id: Number(id)}
-            });
-
-            console.log("result: ", $result);
-            return {
-                transaction: true,
-                data: $result
-            };
-        } catch (e) {
-            throw e;
-        }
-    }
-
-    static async profile(id) {
-        try {
-            return await db.Cart.findOne({
-                where: {id: Number(id)}
-            })
-        } catch (e) {
-            throw e;
-        }
-    }
-
     static async remove_cart(customerId, id) {
         try {
             return await db.Cart.destroy({

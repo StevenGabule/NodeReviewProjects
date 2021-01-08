@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       {}
   );
-  OrderItem.associate = function (models) {
+  OrderItem.associate = function ({Book}) {
+      OrderItem.belongsTo(Book,{
+          foreignKey: "bookId"
+      });
   };
   return OrderItem;
 };

@@ -40,7 +40,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       {}
   );
-  Order.associate = function (models) {
+  Order.associate = function ({OrderItem}) {
+      Order.hasMany(OrderItem,{
+          onDelete: "CASCADE",
+          foreignKey: "orderId"
+      });
   };
   return Order;
 };

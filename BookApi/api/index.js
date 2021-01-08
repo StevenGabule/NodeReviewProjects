@@ -4,6 +4,7 @@ import cors from 'cors';
 import BookRoutes from './server/routes/BookRoutes';
 import UserRoutes from "./server/routes/UserRoutes";
 import CartRoutes from "./server/routes/CartRoutes";
+import OrderRoutes from "./server/routes/OrderRoutes";
 
 config.config();
 
@@ -34,6 +35,7 @@ const port = process.env.PORT || 8000;
 app.use("/api/v1/books", BookRoutes);
 app.use("/api/v1/users", UserRoutes);
 app.use("/api/v1/carts", CartRoutes);
+app.use("/api/v1/orders", OrderRoutes);
 
 app.get("*", (req, res) => {
     res.status(200).send({
