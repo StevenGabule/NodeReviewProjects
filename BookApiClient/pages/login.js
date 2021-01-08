@@ -6,6 +6,7 @@ import axios from "axios";
 import catchErrors from "../utils/catchErrors";
 import {handleLogin} from "../utils/auth";
 import Alert from "react-bootstrap/Alert";
+import Head from "next/head";
 
 const INITIAL_VALUE = {
     email: "mike@gmail.com",
@@ -31,17 +32,12 @@ function Login() {
             setLoading(true);
             setError({});
             const url = `${baseUrl}/api/v1/users/login`;
-            const {
-                email,
-                password} = user;
-            const payload = {
-                email,
-                password,
-            };
+            const { email, password} = user;
+            const payload = { email, password};
             const response = await axios.post(url, payload)
-            console.log(response.data);
             handleLogin(response.data);
         } catch (e) {
+            // console.log(e)
             catchErrors(e, setError);
             setShow(true);
         } finally {
@@ -49,14 +45,15 @@ function Login() {
         }
     }
     return <>
+        <Head>
+            <title>Login</title>
+        </Head>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
                     <h3>Login</h3>
                     <form action="" onSubmit={handleSubmit}>
-
                         <div className="row">
-
                             {Object.keys(error).length > 0 && (
                                 <div className="col-md-12">
                                     <Alert variant="danger" onClose={() => setShow(false)} dismissible>
@@ -64,7 +61,6 @@ function Login() {
                                     </Alert>
                                 </div>
                             )}
-
                             <div className="col-md-12 mb-3">
                                 <label htmlFor="email">Email</label>
                                 <input type="text"

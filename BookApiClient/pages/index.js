@@ -27,10 +27,15 @@ function HomePage({data}) {
                 </div>
 
                 <div className={"row row-cols-1 row-cols-md-4"}>
-                    {data.map(({id, title,avatar}) => (
+                    {parseInt(data.length) === 0 && (
+                        <Col>
+                            <p>No book available</p>
+                        </Col>
+                    )}
+                    {data.map(({id, title, price, avatar}) => (
                         <Col key={id}>
                             <Card className={"mb-3"}>
-                                <Card.Img variant="top" src={avatar} />
+                                <Card.Img variant="top" src={avatar}/>
                                 <Card.Body>
                                     <Card.Title className={"mb-0"}>
                                         <Link href={`/books?_id=${id}`}><a className={"btn-link"}>{title}</a></Link>

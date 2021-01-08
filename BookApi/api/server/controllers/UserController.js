@@ -33,6 +33,7 @@ class UserController {
 
 
     static async login(req, res) {
+        // console.log(req.body)
         if (!req.body.email || !req.body.password) {
             util.setError(400, "Login invalid, Check your credentials!");
             return util.send(res);
@@ -41,7 +42,7 @@ class UserController {
         const user = req.body;
         try {
             const result = await UserService.login(user);
-            console.log(result);
+            console.log(result)
             if (result.loggedIn) {
                 util.setSuccess(200, "User loggedIn!", result);
             } else {

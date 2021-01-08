@@ -32,43 +32,43 @@ function Header({user}) {
                 <div className="collapse navbar-collapse" id="navbarsExampleDefault">
                     <ul className="navbar-nav mr-auto">
 
-                        <li className="nav-item active">
+                        <li className={isActive("/") ? "nav-item active" : "nav-item"}>
                             <Link href="/">
                                 <a className="nav-link">Home</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/best-seller") ? "nav-item active" : "nav-item"}>
                             <Link href="/best-seller">
                                 <a className="nav-link">Best Sellers</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/new-releases") ? "nav-item active" : "nav-item"}>
                             <Link href="/new-releases">
                                 <a className="nav-link">New Releases</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/pre-order-title") ? "nav-item active" : "nav-item"}>
                             <Link href="/pre-order-title">
                                 <a className="nav-link">Pre-Order Titles</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/category") ? "nav-item active" : "nav-item"}>
                             <Link href="/category">
                                 <a className="nav-link">Shop By Category</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/genre") ? "nav-item active" : "nav-item"}>
                             <Link href="/genre">
                                 <a className="nav-link">Genre</a>
                             </Link>
                         </li>
 
-                        <li className="nav-item">
+                        <li className={isActive("/deals") ? "nav-item active" : "nav-item"}>
                             <Link href="/deals">
                                 <a className="nav-link">Deals</a>
                             </Link>
