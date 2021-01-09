@@ -7,9 +7,7 @@ import Router from "next/router";
 import catchErrors from "../utils/catchErrors";
 
 const INITIAL_VALUE = {
-    firstName: "mike",
-    lastName: "ross",
-    middleName: "d",
+    name: "mike d ross",
     email: "mike@gmail.com",
     contact_number: "0987654321",
     password: "password",
@@ -36,24 +34,9 @@ function Register() {
             setError('');
             const user_type = 1;
             const url = `${baseUrl}/api/v1/users/register`;
-            const {
-                firstName,
-                middleName,
-                lastName,
-                email,
-                contact_number,
-                password} = user;
-            const payload = {firstName,
-                middleName,
-                lastName,
-                email,
-                contact_number,
-                password,
-                user_type,
-            };
+            const {name, email, contact_number, password} = user;
+            const payload = {name, email, contact_number, password, user_type};
             await axios.post(url, payload)
-            setUser(INITIAL_VALUE);
-            setSuccess(true)
             await Router.push('/login');
         } catch (e) {
             catchErrors(e, setError);
@@ -70,41 +53,15 @@ function Register() {
                     <h3>Register</h3>
                     <form action="" onSubmit={handleSubmit}>
                         <div className="row">
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="firstName">First name</label>
+                            <div className="col mb-3">
+                                <label htmlFor="name">Name</label>
                                 <input type="text"
                                        className="form-control"
-                                       id="firstName"
+                                       id="name"
                                        placeholder=""
                                        value=""
-                                       name={"firstName"}
-                                       required value={user.firstName} onChange={handleChange}/>
-                            </div>
-
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="middleName">Middle name</label>
-                                <input type="text"
-                                       className="form-control"
-                                       id="middleName"
-                                       placeholder=""
-                                       value={user.middleName}
-                                       name={"middleName"}
-                                       onChange={handleChange}
-                                       required/>
-
-                            </div>
-
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="lastName">Last name</label>
-                                <input type="text"
-                                       className="form-control"
-                                       id="lastName"
-                                       placeholder=""
-                                       name={"lastName"}
-                                       value={user.lastName}
-                                       onChange={handleChange}
-                                       required/>
-
+                                       name={"name"}
+                                       required value={user.name} onChange={handleChange}/>
                             </div>
                         </div>
 

@@ -18,7 +18,7 @@ function Header({user}) {
 
     return (
         <Navbar collapseOnSelect expand={"lg"} bg={"dark"} variant={"dark"}>
-            <div className="container">
+            <div className="container" style={{width: '90% !important'}}>
                 <Link href="/">
                     <a className="navbar-brand">FullyBook</a>
                 </Link>
@@ -76,6 +76,9 @@ function Header({user}) {
                     </ul>
                     {user  ? (
                         <>
+                            <Link href={"/carts"}>
+                                <a className="nav-link">Carts</a>
+                            </Link>
                             <Link href={"/profile"}>
                                 <a className="nav-link">Profile</a>
                             </Link>

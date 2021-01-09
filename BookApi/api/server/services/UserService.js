@@ -76,23 +76,10 @@ class UserService {
         }
     }
 
-    static async update(id, {params}) {
+    static async update(id, {name, contact_number,email}) {
         try {
-            const result = await db.User.findOne({
-                where: {id: Number(id)}
-            });
-
-            if (result) {
-                const $result = await db.User.update({
-                    firstName: params.firstName,
-                    middleName: params.middleName,
-                    lastName: params.lastName,
-                    contact_number: params.contact_number,
-                    email: params.email,
-                }, {where: {id: Number(id)}})
-                console.log("result: ", $result);
-                return $result;
-            }
+            const user = await db.User.findOne({where: {id: Number(id)}});
+            if (user) return await user.update({name, contact_number, email})
         } catch (e) {
             throw e;
         }

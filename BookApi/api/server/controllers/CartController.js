@@ -17,7 +17,7 @@ class CartController {
             if (carts.length > 0) {
                 util.setSuccess(200, "carts", carts);
             } else {
-                util.setSuccess(200, "Empty Carts")
+                util.setSuccess(200, "Empty Carts", [])
             }
             return util.send(res);
         } catch (e) {

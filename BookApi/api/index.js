@@ -5,6 +5,7 @@ import BookRoutes from './server/routes/BookRoutes';
 import UserRoutes from "./server/routes/UserRoutes";
 import CartRoutes from "./server/routes/CartRoutes";
 import OrderRoutes from "./server/routes/OrderRoutes";
+import CategoryRouter from "./server/routes/CategoryRoutes";
 
 config.config();
 
@@ -36,6 +37,7 @@ app.use("/api/v1/books", BookRoutes);
 app.use("/api/v1/users", UserRoutes);
 app.use("/api/v1/carts", CartRoutes);
 app.use("/api/v1/orders", OrderRoutes);
+app.use("/api/v1/categories", CategoryRouter);
 
 app.get("*", (req, res) => {
     res.status(200).send({

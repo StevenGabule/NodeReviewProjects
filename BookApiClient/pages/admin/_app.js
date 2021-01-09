@@ -1,12 +1,11 @@
 import App from "next/app";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from "react";
-import Layout from "../components/_App/Layout";
+import Layout from "../../components/_App/Layout";
 import {destroyCookie, parseCookies} from "nookies";
-import {redirectUser} from "../utils/auth";
-import baseUrl from "../utils/baseUrl";
+import {redirectUser} from "../../utils/auth";
+import baseUrl from "../../utils/baseUrl";
 import axios from "axios";
-import '../styles/nprogress.css';
 import "react-quill/dist/quill.snow.css";
 
 
@@ -30,9 +29,6 @@ class MyApp extends App {
                 const payload = {headers: {Authorization: token}};
                 const url = `${baseUrl}/api/v1/users/profile`;
                 const {data: user} = await axios.get(url, payload);
-                if (parseInt(user.user_type) === 2) {
-                    return redirectUser(ctx, "/admin")
-                }
                 pageProps.user = user;
                 pageProps.token = token;
             } catch (e) {

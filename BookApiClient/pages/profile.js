@@ -4,6 +4,7 @@ import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import catchErrors from "../utils/catchErrors";
 import Alert from "react-bootstrap/Alert";
+import Head from "next/head";
 
 const PASSWORD = {
     currentPassword: "",
@@ -16,7 +17,7 @@ function Profile({user: ProfileInfo, token: Tokens}) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [disabled, setDisabled] = useState(false);
-    const [error, setError] = useState({});
+    const [error, setError] = useState('');
     const [show, setShow] = useState(false);
     const [password, setPassword] = useState(PASSWORD);
     const [token, setToken] = useState(Tokens);
@@ -37,22 +38,8 @@ function Profile({user: ProfileInfo, token: Tokens}) {
             setLoading(true);
             setError('');
             const url = `${baseUrl}/api/v1/users/update`;
-            const {
-                firstName,
-                middleName,
-                lastName,
-                contact_number,
-                email,
-            } = user;
-            const payload = {
-                params: {
-                    firstName,
-                    middleName,
-                    lastName,
-                    contact_number,
-                    email
-                }
-            };
+            const { name, contact_number, email, } = user;
+            const payload = { name, contact_number, email};
             const headers = {headers: {Authorization: token}};
             const response = await axios.put(url, payload, headers)
             console.log(response)
@@ -100,49 +87,27 @@ function Profile({user: ProfileInfo, token: Tokens}) {
     }
 
     return <>
+        <Head>
+            <title>{user.name} Profile</title>
+        </Head>
         <Container>
             <Row className="justify-content-md-center">
                 <Col md={8}>
                     <h3>Personal Information</h3>
                     <form onSubmit={handleSubmit}>
                         <div className="row">
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="firstName">First name</label>
+                            <div className="col mb-3">
+                                <label htmlFor="name">Name</label>
                                 <input type="text"
                                        className="form-control"
-                                       id="firstName"
+                                       id="name"
                                        placeholder=""
                                        value=""
-                                       name={"firstName"}
-                                       required value={user.firstName}
+                                       name={"name"}
+                                       required value={user.name}
                                        onChange={handleChange}/>
                             </div>
 
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="middleName">Middle name</label>
-                                <input type="text"
-                                       className="form-control"
-                                       id="middleName"
-                                       placeholder=""
-                                       value={user.middleName}
-                                       name={"middleName"}
-                                       onChange={handleChange}
-                                       required/>
-
-                            </div>
-
-                            <div className="col-md-4 mb-3">
-                                <label htmlFor="lastName">Last name</label>
-                                <input type="text"
-                                       className="form-control"
-                                       id="lastName"
-                                       placeholder=""
-                                       name={"lastName"}
-                                       value={user.lastName}
-                                       onChange={handleChange}
-                                       required/>
-
-                            </div>
                         </div>
 
                         <div className="row">

@@ -6,11 +6,15 @@ import axios from "axios";
 import Head from "next/head";
 import "../styles/Home.module.css";
 
-function HomePage({data}) {
-    async function handleDeleteBook(id) {
-        const url = `${baseUrl}/api/v1/books/${id}`
-        const response = await axios.delete(url, null);
-        console.log(response);
+function HomePage({data, token}) {
+    async function handleAddToCart(id) {
+        const url = `${baseUrl}/api/v1/carts`;
+        const qty = 1;
+        const bookId = id;
+        const payload = { bookId, qty};
+        const headers = {headers: {Authorization: token}};
+        const response = await axios.post(url, payload, headers)
+        console.log(response)
     }
 
     return (
@@ -37,9 +41,11 @@ function HomePage({data}) {
                             <Card className={"mb-3"}>
                                 <Card.Img variant="top" src={avatar}/>
                                 <Card.Body>
-                                    <Card.Title className={"mb-0"}>
+                                    <Card.Title className={"mb-2"}>
                                         <Link href={`/books?_id=${id}`}><a className={"btn-link"}>{title}</a></Link>
                                     </Card.Title>
+                                    <Card.Subtitle className="mb-2 text-muted">Price: {price}</Card.Subtitle>
+                                    <Button type={"button"} variant="primary" size={"sm"} block onClick={() => handleAddToCart(id)}>Add to cart</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
